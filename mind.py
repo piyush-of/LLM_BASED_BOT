@@ -5,20 +5,15 @@ os.environ.setdefault("CT2_VERBOSE", "-1")
 import re
 import socket
 import ollama
-from twist_micro_server import twist_api
-from functions import listen, say, speak, twist, string_to_twist_essentials
-import rclpy
-import asyncio
+from functions import listen, speak, twist
 import requests
 import time
-import inspect
 
 # ---- CONFIG ----
 CHK_VOICE = False
 SIM = False                      # keep False to use real ESP by default
 AUTO_SIM_IF_OFFLINE = True       # if True, fall back to sim when ESP is unreachable
 MAX_OFFLINE_SECONDS = 5.0        # consider ESP offline if not reachable for this many seconds
-HEALTH_PATH = "/"                # path to probe for minimal health (set to "/" or "/status" if your ESP implements)
 ESP_HOST = "192.168.4.1"
 ESP_PORT = 80
 ESP_ENDPOINT = "/twist"
@@ -32,7 +27,6 @@ STARTING_SPEECH = "Voice Check... Cheem tapaak dum dum..."
 # ----------------
 
 ESP_URL = f"http://{ESP_HOST}:{ESP_PORT}{ESP_ENDPOINT}"
-ESP_HEALTH_URL = f"http://{ESP_HOST}:{ESP_PORT}{HEALTH_PATH}"
 
 # Session for keep-alive
 _session = requests.Session()
@@ -62,7 +56,7 @@ def wait_for_esp(timeout_total=MAX_OFFLINE_SECONDS, poll_interval=0.5):
         time.sleep(poll_interval)
     return False
 
-def send_to_esp_http_single(lin, ang, dur, use_health_check=True):
+def send_to_esp_http_single(lin, ang, dur):
     global _session
     """
     Send a single [lin,ang,dur] payload. ESP handles timing non-blocking.
@@ -123,32 +117,15 @@ def process_action_blocks(action_text):
             print("Failed to parse block:", b, e)
     return cmds
 
-
-# wrapper to call say/speak in a way that waits for completion if coroutine
-def speak_and_wait(text):
+# Wrapper for TTS output: validates input, invokes speak(), and blocks until speech completes
+def speak_and_wait(text: str):
     if not text or not text.strip():
         return
+
     try:
-        if inspect.iscoroutinefunction(say):
-            asyncio.run(say(text))
-        else:
-            result = say(text)
-            if inspect.isawaitable(result):
-                try:
-                    asyncio.run(result)
-                except RuntimeError:
-                    time.sleep(SLEEP_AFTER_SPEAK)
-            else:
-                time.sleep(SLEEP_AFTER_SPEAK)
+        speak(text)
     except Exception as e:
-        try:
-            if inspect.iscoroutinefunction(speak):
-                asyncio.run(speak(text))
-            else:
-                speak(text)
-            time.sleep(SLEEP_AFTER_SPEAK)
-        except Exception as e2:
-            print("TTS failed:", e, e2)
+        print("TTS failed:", e)
 
 # simulator runner (used if SIM or fallback)
 def sim_twist_batch(cmds):
@@ -219,7 +196,7 @@ try:
             break
 
         stream = ollama.chat(
-            model='bot_annie',
+            model='annie_bot',
             messages=[{'role': 'user', 'content': USER_PROMPT}],
             stream=True,
         )
@@ -320,7 +297,4 @@ finally:
         twist_api.destroy_node()
     except:
         pass
-    try:
-        rclpy.shutdown()
-    except:
-        pass
+    

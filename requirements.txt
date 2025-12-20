@@ -1,6 +1,7 @@
-# -------------------------
-# Core dependencies
-# -------------------------
+# =========================
+# Python (pip) dependencies
+# =========================
+
 faster-whisper
 numpy
 requests
@@ -9,20 +10,4 @@ scipy
 SpeechRecognition
 vosk
 ollama
-
-# -------------------------
-# Optional / extra features
-# -------------------------
-edge-tts        # only needed if you use Microsoft Edge TTS (uncomment in code)
-
-# -------------------------
-# System / ROS dependencies (NOT installable via pip)
-# Install via ROS 2 (e.g., Humble/Foxy/etc.) or apt
-# -------------------------
-# geometry_msgs   (ROS message definitions)
-# rclpy           (ROS 2 Python client library)
-
-# -------------------------
-# External binaries (manual install)
-# -------------------------
-# piper           (TTS engine, install from https://github.com/rhasspy/piper)
+noisereduce

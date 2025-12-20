@@ -1,0 +1,69 @@
+# Annie Bot – Architecture Overview
+
+## High-level flow
+
+Mic → Speech Recognition → LLM → Action Parser → ESP → Motors
+                          ↓
+                        Piper TTS → Speakers
+
+## Core files
+
+- mind.py
+  - Main control loop
+  - Handles listening, thinking, acting
+
+- functions.py
+  - listen(): speech-to-text
+  - speak(): text-to-speech
+  - send_twist(): ESP communication
+
+## What NOT to touch first
+- Core logic in mind.py
+- ESP communication format
+
+## Good areas for beginners
+- improving prompt
+- improving speech filters
+- adding logging
+- improving error handling
+
+## 📁 Project Structure
+
+```text
+bot-annie/
+├── mind.py                 # Main control loop
+├── functions.py            # Speech, TTS, ESP communication
+├── ESP Code/               # ESP8266 / ESP32 firmware
+├── piper/                  # (ignored) Piper TTS binary
+├── piper-voices/           # (ignored) Piper voice models
+├── legacy/                 # Deprecated / old code (read-only)
+│   └── README.md
+├── docs/                   # Documentation for contributors
+│   ├── CONTRIBUTING.md
+│   ├── GOOD_FIRST_ISSUES.md
+│   └── ARCHITECTURE.md
+├── README.md               # Project overview & setup
+├── requirements.txt        # Python dependencies
+├── .gitignore              # Git ignore rules
+```
+## 🔧 functions.py – Core Utilities
+
+This file contains reusable helper functions.
+
+### Speech functions
+- `listen()`
+  - Records audio from microphone
+  - Converts speech to text using Whisper
+
+- `speak(text)`
+  - Converts text to speech using Piper
+  - Plays audio using sounddevice
+
+### Motion / ESP functions
+- `send_twist(lin, ang, dur)`
+  - Sends motion command to ESP via HTTP
+  - Non-blocking
+
+### Utility functions
+- `filter_text(text)`
+  - Cleans text before TTS

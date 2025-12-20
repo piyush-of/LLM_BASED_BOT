@@ -1,25 +1,29 @@
-# Python cache
+# =========================
+# Python / Virtual Envs
+# =========================
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Virtual environment
+.venv/
 venv/
 .env/
-.venv/
 
-# Models and binaries
-piper-voices/
-*.onnx
-*.deb
-*.bin
-*.pth
-*.pt
-*.h5
-*.ckpt
+# =========================
+# OS-specific junk
+# =========================
+# Linux
+*~
+*.swp
 
-# Audio/temp files
+# Windows
+Thumbs.db
+Desktop.ini
+
+# =========================
+# Audio / Temp Files
+# =========================
 *.wav
 *.mp3
 *.flac
@@ -27,15 +31,55 @@ piper-voices/
 *.raw
 *.tmp
 
+# =========================
 # Logs
+# =========================
 *.log
+log/
 
-# IDE/project files
-.vscode/
-.idea/
-*.swp
+# =========================
+# Models & Large Assets
+# =========================
+# Piper voices (large, user-specific)
+piper-voices/
+*.onnx
 
-# Build/dist
+# ML / audio models
+*.pth
+*.pt
+*.ckpt
+*.h5
+
+# =========================
+# External Binaries
+# =========================
+# Piper binaries should not be committed
+piper/
+
+# ESP build artifacts (keep source!)
+*.bin
+*.elf
+*.hex
+
+# =========================
+# Python Packaging
+# =========================
 build/
 dist/
 *.egg-info/
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Legacy / Experiments
+# =========================
+legacy/
+
+# =========================
+# Misc
+# =========================
+*.deb
