@@ -31,20 +31,21 @@ Mic → Speech Recognition → LLM → Action Parser → ESP → Motors
 
 ```text
 bot-annie/
-├── mind.py                 # Main control loop
-├── functions.py            # Speech, TTS, ESP communication
-├── ESP Code/               # ESP8266 / ESP32 firmware
-├── piper/                  # (ignored) Piper TTS binary
-├── piper-voices/           # (ignored) Piper voice models
-├── legacy/                 # Deprecated / old code (read-only)
-│   └── README.md
-├── docs/                   # Documentation for contributors
-│   ├── CONTRIBUTING.md
-│   ├── GOOD_FIRST_ISSUES.md
-│   └── ARCHITECTURE.md
-├── README.md               # Project overview & setup
-├── requirements.txt        # Python dependencies
-├── .gitignore              # Git ignore rules
+├── mind.py              # Main control loop
+├── functions.py         # Speech, TTS, ESP communication
+├── perf_test.py         # Performance benchmarking script
+├── ARCHITECTURE.md      # System architecture & code overview
+├── CONTRIBUTING.md      # Contribution rules & guidelines
+├── README.md            # Project overview & setup
+├── requirements.txt     # Python dependencies
+├── .gitignore           # Git ignore rules
+├── ESP Code/            # ESP8266 / ESP32 firmware
+├── piper/               # (ignored) Piper TTS binary
+├── piper-voices/        # (ignored) Piper voice models
+├── models/              # LLM / STT models (if any)
+├── log/                 # Logs
+└── __pycache__/         # Python cache (ignored)
+
 ```
 ## 🔧 functions.py – Core Utilities
 
